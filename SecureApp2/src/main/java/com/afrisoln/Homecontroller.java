@@ -12,8 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class Homecontroller {
-	@Autowired		//method for calling the useRservice claSS
+
+@Autowired		//method for calling the useRservice claSS
 	private Userservice userservice;
+
+@RequestMapping("/")
+public String home(HttpServletRequest request) {
+	
+	return"index";
+}
+
 	@RequestMapping("/dashboard")
 	public String welcome(HttpServletRequest request) {
 		request.setAttribute("mode", "MODE_HOME");
@@ -66,7 +74,8 @@ public class Homecontroller {
 	@RequestMapping("login-user")
 	public String loginuser(@ModelAttribute User user,HttpServletRequest request) {
 		if(userservice.findByUsernameAndPassword(user.getUsername(), user.getPassword())!=null) {
-			return "home";
+			request.setAttribute("mode", "MODE_HOME");
+			return "welcome";
 		}
 		else {
 			request.setAttribute("error", "Invalid username or password");
